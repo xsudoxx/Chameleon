@@ -1,23 +1,51 @@
-name: Chameleon XOR Test
+name: Lint C Code
 
 on:
   push:
     branches:
-      - main
+      - main  # Run on push to main branch (you can change this to your default branch)
+  pull_request:
+    branches:
+      - main  # Run on pull requests to main
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up GCC
-        run: sudo apt-get install gcc
+      # Set up clang-format
+      - name: Set up clang-format
+        run: sudo apt-get install -y clang-format
 
-      - name: Compile chameleon
-        run: gcc -o chameleon chameleon.c modules/xor.c
+      # Run clang-format to check code style
+      - name: Run clang-format
+        run: |
+          files=$(git ls-files '*.c' '*.h')
+          for file in $files; do
+            clang-format --dry-run --Werror $file
+          done
 
-      - name: Run chameleon XOR encryption
-        run: ./chameleon xor modules/raw_shellcode.bin modules/encrypted_shellcode.bin key123
+      # Set up cppcheck
+      - name: Set up cppcheck
+        run: sudo apt-get install -y cppcheck
+
+      # Run cppcheck for static analysis
+      - name: Run cppcheck
+        run: |
+          cppcheck --enable=all --inconclusive --xml --output-file=cppcheck.xml .
+
+      # Set up clang-tidy
+      - name: Set up clang-tidy
+        run: sudo apt-get install -y clang-tidy
+
+      # Run clang-tidy
+      - name: Run clang-tidy
+        run: |
+          files=$(git ls-files '*.c' '*.h')
+          for file in $files; do
+            clang-tidy $file -- -I./include
+          done
