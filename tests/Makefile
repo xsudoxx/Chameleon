@@ -14,4 +14,4 @@ modules/xor.o: modules/xor.c modules/xor.h
 
 # Clean up object files and executables
 clean:
-	rm -f test_xor modules/xor.o modules/encrypted_shellcode.bin
+	rm -f test_xor modules/xor.o
