@@ -1,28 +1,21 @@
-CC=gcc
-CFLAGS=-Wall -I../modules  # Include the modules folder for the headers
-SOURCES=test_xor.c
-OBJECTS=$(SOURCES:.c=.o)
-EXEC=test_runner  # Renaming to avoid conflict with run_tests
+CC = gcc
+CFLAGS = -Wall -I./modules
 
-# Default target to build the tests
-all: $(EXEC)
+# Target to compile the test
+test_xor: test_xor.c modules/xor.o
+	$(CC) $(CFLAGS) test_xor.c -o test_xor modules/xor.o
 
-# Rule to build the final executable (test_runner)
-$(EXEC): $(OBJECTS) ../modules/xor.o
-	$(CC) $(OBJECTS) -o $(EXEC) ../modules/xor.o
+# Target to compile the XOR module
+modules/xor.o: modules/xor.c modules/xor.h
+	$(CC) $(CFLAGS) -c modules/xor.c -o modules/xor.o
 
-# Rule to compile the test source file
-test_xor.o: test_xor.c
-	$(CC) $(CFLAGS) -c test_xor.c -o test_xor.o
+# Target to run the tests
+run_tests: test_xor
+	./test_xor
 
-# Rule to compile the xor module
-../modules/xor.o: ../modules/xor.c
-	$(CC) $(CFLAGS) -c ../modules/xor.c -o ../modules/xor.o
-
-# Clean up object files and executable
+# Clean up object files and executables
 clean:
-	rm -f $(OBJECTS) $(EXEC)
+	rm -f test_xor modules/xor.o modules/encrypted_shellcode.bin modules/decrypted_shellcode.bin
 
-# Run the compiled tests
-run_tests: $(EXEC)
-	./$(EXEC)
+# Phony targets
+.PHONY: clean run_tests
