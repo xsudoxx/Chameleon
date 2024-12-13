@@ -14,12 +14,29 @@ void xor_help() {
     printf("  chameleon xor raw_shellcode.txt encrypted_shellcode.txt key123\n");
 }
 
-void xor_enc_dec(const char* input, char* output, const char* key){
-    size_t key_len = strlen(key);
-    size_t input_len = strlen(input);
+void xor_enc_dec(const char* input_file, const char* output_file, const char* key) {
+    FILE *input = fopen(input_file, "rb");
+    FILE *output = fopen(output_file, "wb");
 
-    for(size_t i = 0; i < input_len; i++){
-        output[i] = input[i] ^ key[i % key_len]; //XOR each byte
+    if (!input || !output) {
+        printf("Error: Unable to open file(s).\n");
+        if (input) fclose(input);
+        if (output) fclose(output);
+        return;
     }
-    output[input_len] = "\0"; //Null terminate the output string
+
+    size_t key_len = strlen(key);
+    int c;
+    size_t i = 0;
+
+    // Read each byte, XOR it with the key, and write to the output file
+    while ((c = fgetc(input)) != EOF) {
+        fputc(c ^ key[i % key_len], output);
+        i++;
+    }
+
+    fclose(input);
+    fclose(output);
+
+    printf("File '%s' successfully encrypted/decrypted to '%s'.\n", input_file, output_file);
 }
