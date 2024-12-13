@@ -3,10 +3,10 @@ name: Run Unit Tests
 on: 
   push:
     branches:
-      - main  # Trigger tests on every push to main branch
+      - main
   pull_request:
     branches:
-      - main  # Trigger tests on every PR to the main branch
+      - main
 
 jobs:
   build:
@@ -19,12 +19,9 @@ jobs:
       - name: Set up GCC
         run: sudo apt-get install gcc
 
-      - name: Compile code
+      - name: Compile and run tests
         run: |
           cd tests
-          make  # This compiles the test_xor.c and links it with modules/xor.o
-
-      - name: Run unit tests
-        run: |
-          cd tests
-          make run_tests  # This runs the compiled tests
+          make clean  # Clean any old compiled files
+          make        # Compile the tests
+          make run_tests  # Run the tests
