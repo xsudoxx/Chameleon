@@ -1,0 +1,30 @@
+name: Run Unit Tests
+
+on: 
+  push:
+    branches:
+      - main  # Trigger tests on every push to main branch
+  pull_request:
+    branches:
+      - main  # Trigger tests on every PR to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up GCC
+        run: sudo apt-get install gcc
+
+      - name: Compile code
+        run: |
+          cd tests
+          make  # This compiles the test_xor.c and links it with modules/xor.o
+
+      - name: Run unit tests
+        run: |
+          cd tests
+          make run_tests  # This runs the compiled tests

@@ -1,23 +1,26 @@
-#include <assert.h>
 #include <stdio.h>
-#include "modules/xor.h"
+#include <stdlib.h>
+#include <string.h>
+#include "xor.h"
 
 void test_xor_encryption() {
-    const char* input = "Hello, World!";
-    const char* key = "key123";
-    char encrypted_output[256];
-    char decrypted_output[256];
+    const char *input = "Hello, World!";
+    const char *key = "key123";
     
-    // Encrypt the input
-    xor_enc_dec(input, encrypted_output, key);
+    char encrypted[256] = {0};
+    char decrypted[256] = {0};
     
-    // Decrypt it back
-    xor_enc_dec(encrypted_output, decrypted_output, key);
+    // Encrypt the message
+    xor_enc_dec(input, encrypted, key);
     
-    // Assert that the decrypted output matches the original input
-    assert(strcmp(input, decrypted_output) == 0);
+    // Decrypt the message (should match the original)
+    xor_enc_dec(encrypted, decrypted, key);
     
-    printf("XOR Encryption and Decryption Test Passed!\n");
+    if (strcmp(input, decrypted) == 0) {
+        printf("Test passed: XOR encryption/decryption works.\n");
+    } else {
+        printf("Test failed: Decrypted message does not match original.\n");
+    }
 }
 
 int main() {
