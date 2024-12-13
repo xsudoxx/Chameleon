@@ -36,13 +36,13 @@ int main(int argc, char* argv[]) {
             return 0;
         }
 
-        // if (argc == 5) {
-        //     const char* input_file = argv[2];
-        //     const char* output_file = argv[3];
-        //     const char* key = argv[4];
-        //     xor_encrypt(input_file, output_file, key);
-        //     return 0;
-        // }
+        if (argc == 5) {
+            const char* input_file = argv[2];
+            const char* output_file = argv[3];
+            const char* key = argv[4];
+            xor_enc_dec(input_file, output_file, key);
+            return 0;
+        }
 
         printf("Error: Invalid arguments for 'xor'.\n");
         xor_help();
