@@ -10,25 +10,31 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # The operating system the job will run on
+    runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the repository
-    - name: Checkout code
-      uses: actions/checkout@v2
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    # Step 2: Set up GCC (C compiler)
-    - name: Set up GCC
-      run: sudo apt-get update && sudo apt-get install -y build-essential
+      # Set up GCC (C compiler)
+      - name: Set up GCC
+        run: sudo apt-get update && sudo apt-get install -y build-essential
 
-    # Step 3: Compile the C program
-    - name: Compile C program
-      run: make
+      # Change to the tests directory and compile the tests
+      - name: Compile tests
+        run: |
+          cd tests
+          make
 
-    # Step 4: Run the unit test
-    - name: Run unit test
-      run: ./test_xor
+      # Run the unit tests
+      - name: Run unit tests
+        run: |
+          cd tests
+          make run_tests
 
-    # Step 5: Clean up (optional)
-    - name: Clean up
-      run: make clean
+      # Clean up (optional)
+      - name: Clean up
+        run: |
+          cd tests
+          make clean
