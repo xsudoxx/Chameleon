@@ -48,8 +48,9 @@ Whether you're a red teamer looking to sharpen your offensive tactics or a blue 
    Install required libraries and tools (will be detailed in future documentation).  
 
 3. **Run Your First Module**  
-   ```bash
-   python3 chameleon.py --help
+   ```
+   gcc -o chameleon chameleon.c modules/xor.c
+   .\chameleon.exe xor
    ```
 
 ---
