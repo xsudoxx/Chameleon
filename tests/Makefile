@@ -2,12 +2,12 @@ CC=gcc
 CFLAGS=-Wall -I../modules  # Include the modules folder for the headers
 SOURCES=test_xor.c
 OBJECTS=$(SOURCES:.c=.o)
-EXEC=run_tests
+EXEC=test_runner  # Renaming to avoid conflict with run_tests
 
 # Default target to build the tests
 all: $(EXEC)
 
-# Rule to build the final executable (run_tests)
+# Rule to build the final executable (test_runner)
 $(EXEC): $(OBJECTS) ../modules/xor.o
 	$(CC) $(OBJECTS) -o $(EXEC) ../modules/xor.o
 
