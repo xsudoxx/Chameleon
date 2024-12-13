@@ -13,3 +13,13 @@ void xor_help() {
     printf("Example:\n");
     printf("  chameleon xor raw_shellcode.txt encrypted_shellcode.txt key123\n");
 }
+
+void xor_enc_dec(const char* input, char* output, const char* key){
+    size_t key_len = strlen(key);
+    size_t input_len = strlen(input);
+
+    for(size_t i = 0; i < input_len; i++){
+        output[i] = input[i] ^ key[i % key_len]; //XOR each byte
+    }
+    output[input_len] = "\0"; //Null terminate the output string
+}
