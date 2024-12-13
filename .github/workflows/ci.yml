@@ -1,0 +1,23 @@
+name: Chameleon XOR Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up GCC
+        run: sudo apt-get install gcc
+
+      - name: Compile chameleon
+        run: gcc -o chameleon chameleon.c modules/xor.c
+
+      - name: Run chameleon XOR encryption
+        run: ./chameleon xor modules/raw_shellcode.bin modules/encrypted_shellcode.bin key123
