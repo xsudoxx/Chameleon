@@ -1,10 +1,7 @@
-name: Run Unit Tests
+name: XOR Encryption Test
 
-on: 
+on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -13,15 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up GCC
-        run: sudo apt-get install gcc
+    - name: Set up GCC
+      run: sudo apt-get install build-essential
 
-      - name: Compile and run tests
-        run: |
-          cd tests
-          make clean  # Clean old files
-          make        # Compile the tests
-          make run_tests  # Run the tests
+    - name: Compile and run test
+      run: |
+        make clean
+        make
+        ./test_xor

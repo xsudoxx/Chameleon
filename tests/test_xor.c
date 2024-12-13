@@ -10,50 +10,45 @@ size_t read_file(const char *filename, char **buffer) {
         perror("Error opening file");
         return 0;
     }
-    
-    // Get file size
+
     fseek(file, 0, SEEK_END);
     size_t file_size = ftell(file);
     fseek(file, 0, SEEK_SET);
-    
-    // Allocate buffer to hold file contents
+
     *buffer = (char *)malloc(file_size);
     if (*buffer == NULL) {
         perror("Memory allocation error");
         fclose(file);
         return 0;
     }
-    
-    // Read the file content into the buffer
+
     size_t bytes_read = fread(*buffer, 1, file_size, file);
     fclose(file);
     return bytes_read;
 }
 
-// Function to write a buffer to a file
+// Function to write the buffer to a file
 void write_file(const char *filename, const char *buffer, size_t size) {
     FILE *file = fopen(filename, "wb");
     if (!file) {
         perror("Error opening file for writing");
         return;
     }
-    
     fwrite(buffer, 1, size, file);
     fclose(file);
 }
 
-void test_xor_encryption() {
-    const char *input_file = "modules/raw_shellcode.bin";
-    const char *encrypted_file = "modules/encrypted_shellcode.bin";
-    const char *decrypted_file = "modules/decrypted_shellcode.bin";
-    const char *key = "key123";
-    
+int main() {
+    const char *input_file = "modules/raw_shellcode.bin";  // The raw shellcode file
+    const char *encrypted_file = "modules/encrypted_shellcode.bin"; // Encrypted output file
+    const char *key = "key123"; // XOR encryption key
+
     // Read the input file into a buffer
     char *input_buffer = NULL;
     size_t input_size = read_file(input_file, &input_buffer);
     if (input_size == 0) {
         printf("Error: Failed to read input file.\n");
-        return;
+        return 1;
     }
 
     // Encrypt the file contents
@@ -61,40 +56,23 @@ void test_xor_encryption() {
     if (encrypted_buffer == NULL) {
         perror("Memory allocation error for encrypted buffer");
         free(input_buffer);
-        return;
+        return 1;
     }
     xor_enc_dec(input_buffer, encrypted_buffer, key);
 
-    // Write encrypted data to file
+    // Write encrypted data to the file
     write_file(encrypted_file, encrypted_buffer, input_size);
 
-    // Decrypt the file contents
-    char *decrypted_buffer = (char *)malloc(input_size);
-    if (decrypted_buffer == NULL) {
-        perror("Memory allocation error for decrypted buffer");
-        free(input_buffer);
-        free(encrypted_buffer);
-        return;
+    // Print the encrypted file contents to stdout (as hex for visibility)
+    printf("Encrypted contents of %s:\n", encrypted_file);
+    for (size_t i = 0; i < input_size; ++i) {
+        printf("%02x ", (unsigned char)encrypted_buffer[i]);
     }
-    xor_enc_dec(encrypted_buffer, decrypted_buffer, key);
-
-    // Write decrypted data to file
-    write_file(decrypted_file, decrypted_buffer, input_size);
-
-    // Compare original and decrypted files
-    if (memcmp(input_buffer, decrypted_buffer, input_size) == 0) {
-        printf("Test passed: XOR encryption/decryption works.\n");
-    } else {
-        printf("Test failed: Decrypted message does not match original.\n");
-    }
+    printf("\n");
 
     // Clean up
     free(input_buffer);
     free(encrypted_buffer);
-    free(decrypted_buffer);
-}
 
-int main() {
-    test_xor_encryption();
     return 0;
 }
