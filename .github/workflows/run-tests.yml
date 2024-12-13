@@ -22,6 +22,6 @@ jobs:
       - name: Compile and run tests
         run: |
           cd tests
-          make clean  # Clean any old compiled files
+          make clean  # Clean old files
           make        # Compile the tests
           make run_tests  # Run the tests
