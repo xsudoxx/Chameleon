@@ -45,7 +45,12 @@ Whether you're a red teamer looking to sharpen your offensive tactics or a blue 
    ```
 
 2. **Dependencies**  
-   Install required libraries and tools (will be detailed in future documentation).  
+   Install required libraries and tools (will be detailed in future documentation).
+
+3. **msfvenom**
+    ```
+    msfvenom -p windows/x64/exec -f raw EXITFUNC=threadCMD=calc.exe -o payload.bin
+    ```
 
 3. **Run Your First Module**  
    ```
