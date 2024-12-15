@@ -7,9 +7,8 @@
 void xor_help() {
     printf("XOR Obfuscation Module\n\n");
     printf("Usage:\n");
-    printf("  xor --help              Display this help message.\n");
-    printf("  xor <input> <output> <key>\n");
-    printf("                          Encrypt a shellcode file using XOR encryption.\n\n");
+    printf("  xor --help                       Display this help message.\n");
+    printf("  xor <input> <output> <key>       Encrypt a shellcode file using XOR encryption.\n");
     printf("Example:\n");
     printf("  chameleon xor raw_shellcode.txt encrypted_shellcode.txt key123\n");
 }

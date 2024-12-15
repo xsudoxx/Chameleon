@@ -7,9 +7,8 @@
 void shellcode_help() {
     printf("Binary To Shellcode Module\n\n");
     printf("Usage:\n");
-    printf("  shellcode --help              Display this help message.\n");
-    printf("  shellcode payload.bin shellcode.txt\n");
-    printf("                          Convert MSFvenom .bin to shellcode.\n\n");
+    printf("  shellcode --help                              Display this help message.\n");
+    printf("  shellcode payload.bin shellcode.txt           Convert MSFvenom .bin to shellcode\n");
     printf("Example:\n");
     printf("  chameleon shellcode payload.bin shellcode.txt \n");
 }
