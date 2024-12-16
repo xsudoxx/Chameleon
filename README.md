@@ -54,7 +54,7 @@ Whether you're a red teamer looking to sharpen your offensive tactics or a blue 
 
 3. **Run Your First Module**  
    ```
-   gcc -o chameleon chameleon.c modules/xor.c
+   gcc -o chameleon chameleon.c modules/xor.c modules/shellcode.c
    .\chameleon.exe xor
    ```
 
