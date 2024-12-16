@@ -2,6 +2,7 @@
 #include <string.h>
 #include "modules/xor.h"
 #include "modules/shellcode.h"
+#include "modules/uuid.h"
 
 // Display the main help menu
 void display_help() {
@@ -78,6 +79,26 @@ int main(int argc, char* argv[]) {
         // If none of the above conditions match, display an error and the help message
         printf("Error: Invalid arguments for 'shellcode'.\n");
         shellcode_help();
+        return 1;
+    }
+    if (strcmp(argv[1], "uuid") == 0) {
+        if (argc == 2) { // User entered "chameleon.exe uuid"
+            uuid_help(); // Show help by default
+            return 0;
+        }
+
+        if (argc == 3 && strcmp(argv[2], "--help") == 0) { // User entered "chameleon.exe uuid --help"
+            uuid_help();
+            return 0;
+        }
+
+        if (argc == 4) { // User entered "chameleon.exe uuid input_file output_file"
+            handle_uuid_conversion(argv[2], argv[3]);
+            return 0;
+        }
+
+        printf("Error: Invalid arguments for 'uuid'.\n");
+        uuid_help();
         return 1;
     }
 
